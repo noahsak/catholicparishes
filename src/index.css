@@ -1,13 +1,241 @@
-body {
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
-    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
-    sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* 🌗 GLOBAL THEME VARIABLES */
+:root {
+  --background: #faf9fb;   /* Light background */
+  --foreground: #111827;   /* Light text */
+  /* --accent will now be set dynamically via React hook */
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0f0f0f;
+    --foreground: #f1f5f9;
+    /* --accent will now be set dynamically via React hook */
+  }
+}
+
+/* 🌍 Global styles */
+body {
+  @apply transition-colors duration-300;
+  background-color: var(--background);
+  color: var(--foreground);
+}
+
+/* 🖱️ KEEP ALL LINKS BLUE + UNDERLINED */
+a {
+  @apply underline;
+  color: #2563eb;  /* text-blue-600 */
+}
+
+@media (prefers-color-scheme: dark) {
+  a {
+    color: #93c5fd;  /* text-blue-300 */
+  }
+}
+
+a:hover {
+  opacity: 0.8;
+}
+
+/* 🎨 Accent utilities — used for non-link UI elements */
+.bg-accent {
+  background-color: var(--accent) !important;
+  color: white !important;
+}
+
+.border-accent {
+  border-color: var(--accent) !important;
+}
+
+.text-accent {
+  color: var(--accent) !important;
+}
+
+/* Hover versions */
+.hover-bg-accent:hover {
+  background-color: var(--accent) !important;
+  color: white !important;
+}
+
+/* 🗺️ Leaflet popup styling (General/Default) */
+.leaflet-popup-content-wrapper {
+  background-color: var(--background);
+  color: var(--foreground);
+  border: 1px solid var(--accent);
+}
+
+.leaflet-popup-tip {
+  background-color: var(--background);
+}
+
+/* 📍 Leaflet control offset */
+.leaflet-top.leaflet-left {
+  top: 60px !important;
+}
+
+/* 📌 User Location Dot */
+.user-location-dot {
+  width: 16px;
+  height: 16px;
+  background: url('/src/assets/blue_dot.png') no-repeat center center;
+  background-size: cover;
+  border-radius: 50%;
+  position: relative;
+  z-index: 1000;
+}
+
+.user-location-dot::after {
+  content: '';
+  width: 40px;
+  height: 40px;
+  position: absolute;
+  top: -12px;
+  left: -12px;
+  background: url('/src/assets/blue_dot.png') no-repeat center center;
+  background-size: cover;
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(0.2);
+    opacity: 0.7;
+  }
+  50% {
+    transform: scale(1.8);
+    opacity: 0;
+  }
+  100% {
+    transform: scale(0.2);
+    opacity: 0;
+  }
+}
+
+/* 🌟 CUSTOM ACCENT POPUP OVERRIDES 🌟 */
+/* This section ensures all content, including links, respects the contrast color (--popup-text) */
+
+.custom-accent-popup .leaflet-popup-content-wrapper {
+  /* Background color set using liturgical accent color */
+  background-color: color-mix(in srgb, var(--accent) 80%, transparent); 
+  border-radius: 0.75rem;
+  padding: 0.5rem;
+  box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+}
+
+.custom-accent-popup .leaflet-popup-tip {
+  /* Match tip background */
+  background-color: color-mix(in srgb, var(--accent) 80%, transparent); 
+}
+
+/* ⚠️ IMPORTANT: These rules are now ONLY for decoration/underlines, NOT text color */
+/* Text color is now handled by the inline style in Map.js. */
+
+/* Force all content elements to remove default link styling, but DON'T set the color here */
+.custom-accent-popup .leaflet-popup-content-wrapper,
+.custom-accent-popup .leaflet-popup-content,
+.custom-accent-popup .leaflet-popup-content *,
+.custom-accent-popup .leaflet-popup-content strong {
+  /* Remove color rule to rely on inline style */
+}
+
+/* Specifically target links (<a> tags) inside the popup */
+.custom-accent-popup .leaflet-popup-content a {
+  /* Ensure link decorations don't conflict with inline color */
+  text-decoration: none !important; 
+  opacity: 1; 
+}
+
+/* Re-apply basic underline to the website link for usability */
+.custom-accent-popup .leaflet-popup-content a[href^="http"] {
+    text-decoration: underline !important;
+}
+
+/* In your global CSS file, NOT in the React component */
+.leaflet-popup-pane {
+  /* Set a Z-index higher than your navbar (which can be z-1000 or z-1010) */
+  z-index: 1050; 
+}
+
+/* --- Final Cluster Styles (Fix for sizing) --- */
+
+/* When the accent is WHITE → cluster text must be black */
+body.liturgical-white .marker-cluster {
+  color: #000000 !important;
+}
+
+
+/* 1. Outer Container: Removes the rim/halo and sets text color */
+.marker-cluster {
+  background-color: transparent !important; 
+  color: #ffffff !important; 
+  font-weight: bold;
+}
+
+/* 2. Inner Circle (The colored dot) */
+/* This targets the div that holds the background color and the number */
+.marker-cluster div {
+  background-color: var(--accent) !important;
+  border-radius: 50%;
+  text-align: center;
+  display: flex; 
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease-out; 
+}
+
+/* 3. Tiers: Sizing and Shading with !important */
+
+/* Small clusters (1-9 markers) */
+.marker-cluster-small div {
+  /* Size: Small dot */
+  width: 30px !important;
+  height: 30px !important;
+  font-size: 13px !important;
+  /* Color: Lighter Accent */
+  background-color: color-mix(in srgb, var(--accent) 90%, white) !important; 
+}
+
+/* Medium clusters (10-99 markers) */
+.marker-cluster-medium div {
+  /* Size: Medium dot */
+  width: 38px !important; 
+  height: 38px !important;
+  font-size: 15px !important;
+  /* Color: Primary Accent */
+  background-color: var(--accent) !important;
+}
+
+/* Large clusters (100+ markers) */
+.marker-cluster-large div {
+  /* Size: Large dot */
+  width: 46px !important; 
+  height: 46px !important;
+  font-size: 17px !important;
+  /* Color: Darker Accent */
+  background-color: color-mix(in srgb, var(--accent) 90%, black) !important; 
+}
+
+/* Ensure the number (span) is correctly centered */
+.marker-cluster span {
+  /* This targets the <span> tag holding the number */
+  line-height: inherit; 
+}
+
+
+/* RUNNING JESUS */
+
+/* --- Add this to your main CSS file (e.g., index.css) --- */
+
+@keyframes run-across {
+  0% {
+    /* Start far off the left side */
+    transform: translateX(-100%) translateY(-50%); 
+  }
+  100% {
+    /* End far off the right side */
+    transform: translateX(100vw) translateY(-50%); 
+  }
 }
