@@ -15,26 +15,30 @@ import { useLiturgicalAccent } from "./hooks/useLiturgicalAccent";
 import { LightboxProvider, Lightbox } from "./hooks/lightbox";
 
 // Vercel imports
-import { Analytics, pageview } from '@vercel/analytics/react';
+import { Analytics, track } from '@vercel/analytics/react';
 import { SpeedInsights } from "@vercel/speed-insights/react";
 
-// Component to track route changes in SPA
-function AnalyticsTracker() {
+// SPA Route Tracker for React Router
+function SpaTracker() {
   const location = useLocation();
+
   useEffect(() => {
-    pageview(location.pathname + location.search);
+    // Track pageview for every route change
+    track('pageview', { path: location.pathname + location.search });
   }, [location]);
+
   return null;
 }
 
 function App() {
-  // Keep accent hook (needed for theme)
   useLiturgicalAccent();
 
   return (
     <LightboxProvider>
       <Router>
-        <AnalyticsTracker />
+        {/* Track SPA route changes */}
+        <SpaTracker />
+
         <Routes>
           <Route path="/" element={<Map />} />
           <Route path="/parish/:slug" element={<ParishDetail />} />
@@ -50,7 +54,7 @@ function App() {
 
       <Lightbox />
 
-      {/* Vercel Analytics */}
+      {/* Vercel Analytics - injects main tracking script */}
       <Analytics />
 
       {/* Vercel Speed Insights */}
