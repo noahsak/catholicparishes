@@ -226,7 +226,7 @@ export default function ParishDetail() {
       {/* 🇻🇦 SEO HEAD TAGS 🇻🇦 */}
       {/* Inserted for search ranking (title, description, canonical, Open Graph, JSON-LD) */}
       <Helmet>
-        <title>{parish.parishName} – Catholic Parishes</title>
+        <title>{parish.parishName}, {parish.parishCityCounty}</title>
         <meta
           name="description"
           content={`Mass times, confession times, adoration times, address, and contact info for ${parish.parishName}, ${parish.parishCityCounty}.`}
