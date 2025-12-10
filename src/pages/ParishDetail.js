@@ -1,19 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+// ADDED: Import Helmet for SEO
+import { Helmet } from "react-helmet-async";
 import externalLinkIcon from "../assets/external_link_white.png";
 import { useLightbox, Lightbox } from "../hooks/lightbox";
-
-export const ParishPage = ({ parishes }) => {
-  const { slug } = useParams();
-  const parish = parishes.find((p) => p.slug === slug);
-  if (!parish) return <div>Parish not found</div>;
-  return (
-    <div>
-      <h1>{parish.parishName}</h1>
-      <p>{parish.parishAddress}</p>
-    </div>
-  );
-};
 
 export default function ParishDetail() {
   const navigate = useNavigate();
@@ -202,8 +192,69 @@ export default function ParishDetail() {
   const banner =
     parish.photos && parish.photos.length > 0 ? parish.photos[0] : null;
 
+  // --- SEO Data Structure ---
+  const addressComponents = {
+    "@type": "PostalAddress",
+    streetAddress: parish.parishAddress,
+    addressLocality: parish.parishCityCounty.split(',')[0].trim(),
+    addressRegion: parish.parishCityCounty.split(',')[1]?.trim(),
+    addressCountry: parish.parishCountry || "CA",
+  };
+
+  // Construct JSON-LD schema with updated type and geolocation (if available)
+  const churchSchema = {
+    "@context": "https://schema.org",
+    "@type": "Church",
+    name: parish.parishName,
+    url: `https://catholicparishes.org/parish/${slug}`,
+    address: addressComponents,
+    ...(parish.lat && parish.long && {
+      geo: {
+        "@type": "GeoCoordinates",
+        latitude: parish.lat,
+        longitude: parish.long,
+      },
+    }),
+    telephone: parish.parishPhone || undefined,
+    email: parish.parishEmail || undefined,
+    sameAs: [parish.website].filter(Boolean)
+  };
+
+
   return (
     <div className="min-h-screen relative flex flex-col text-white">
+      {/* 🇻🇦 SEO HEAD TAGS 🇻🇦 */}
+      {/* Inserted for search ranking (title, description, canonical, Open Graph, JSON-LD) */}
+      <Helmet>
+        <title>{parish.parishName} – Catholic Parishes</title>
+        <meta
+          name="description"
+          content={`Mass times, confession times, adoration times, address, and contact info for ${parish.parishName}, ${parish.parishCityCounty}.`}
+        />
+        <link
+          rel="canonical"
+          href={`https://catholicparishes.org/parish/${slug}`}
+        />
+
+        {/* Optional but recommended SEO */}
+        <meta property="og:title" content={`${parish.parishName} – Catholic Parishes`} />
+        <meta
+          property="og:description"
+          content={`Find Mass, confession, and adoration times for ${parish.parishName}.`}
+        />
+        <meta
+          property="og:url"
+          content={`https://catholicparishes.org/parish/${slug}`}
+        />
+        <meta property="og:type" content="website" />
+
+        {/* JSON-LD Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify(churchSchema)}
+        </script>
+      </Helmet>
+      {/* 🇻🇦 END SEO HEAD TAGS 🇻🇦 */}
+
       {/* Background Banner */}
       <div className="absolute inset-0">
         {banner ? (
@@ -236,6 +287,7 @@ export default function ParishDetail() {
               <p className="text-sm text-white mt-1 drop-shadow flex items-center gap-2">
                 <span>{parish.parishAddress}</span>
                 <a
+                  // FIX: Corrected Google Maps URL for standard search query
                   href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(
                     parish.parishAddress
                   )}`}
@@ -388,7 +440,10 @@ export default function ParishDetail() {
 
             {parish.parishEmail && (
               <div>
-                <strong>Email:</strong> {parish.parishEmail}
+                <strong>Email:</strong>{" "}
+                <a href={`mailto:${parish.parishEmail}`} className="underline text-blue-300">
+                  {parish.parishEmail}
+                </a>
               </div>
             )}
 

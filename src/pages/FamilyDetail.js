@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+// ADDED: Import Helmet for SEO
+import { Helmet } from "react-helmet-async";
 import { useLightbox, Lightbox } from "../hooks/lightbox";
 
 export default function FamilyDetail() {
@@ -97,6 +99,49 @@ export default function FamilyDetail() {
 
   return (
     <div className="min-h-screen relative flex flex-col text-white">
+      
+      {/* 🇻🇦 SEO HEAD TAGS 🇻🇦 */}
+      <Helmet>
+        <title>{family.familyName}</title>
+        <meta
+          name="description"
+          content={`Find the parishes, Mass statistics, and contact information for the ${family.familyName} in ${family.familyCityCounty}, ${family.familyProvince}, ${family.familyCountry}.`}
+        />
+        <link
+          rel="canonical"
+          href={`https://catholicparishes.org/family/${slug}`}
+        />
+
+        {/* Open Graph Tags for Social Media */}
+        <meta property="og:title" content={`${family.familyName} – Catholic Family of Parishes`} />
+        <meta
+          property="og:description"
+          content={`Find parishes and mass times in the ${family.familyName} Family of Parishes.`}
+        />
+        <meta
+          property="og:url"
+          content={`https://catholicparishes.org/family/${slug}`}
+        />
+        <meta property="og:type" content="website" />
+
+        {/* JSON-LD Schema: Using Church for Family/Group of Churches */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Church",
+            name: family.familyName,
+            address: {
+                "@type": "PostalAddress",
+                addressRegion: family.familyProvince,
+                addressCountry: family.familyCountry,
+            },
+            url: `https://catholicparishes.org/family/${slug}`,
+            sameAs: family.familyWebsite ? [family.familyWebsite] : undefined
+          })}
+        </script>
+      </Helmet>
+      {/* 🇻🇦 END SEO HEAD TAGS 🇻🇦 */}
+
       {/* Full-page background */}
       <div className="absolute inset-0 z-0">
         {banner ? (
@@ -114,7 +159,7 @@ export default function FamilyDetail() {
         )}
         <div className="absolute inset-0 bg-black/50" />
       </div>
-
+      
       {/* Banner title */}
       <div className="relative z-10 h-64 md:h-80 flex items-end">
         <div className="w-full">

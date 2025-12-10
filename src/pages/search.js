@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import Fuse from "fuse.js";
 import debounce from "lodash.debounce";
 import { useNavigate } from "react-router-dom";
-
+import { Helmet } from "react-helmet-async";
 
 export default function SearchPage() {
   const [dioceses, setDioceses] = useState([]);
@@ -167,6 +167,25 @@ export default function SearchPage() {
   // ---------------------------
   return (
     <div className="min-h-screen relative text-white">
+
+      <Helmet>
+      <title>Search Catholic Parishes – CatholicParishes.org</title>
+      <meta
+        name="description"
+        content="Search for Catholic parishes across Ontario by name, diocese, or location."
+      />
+      <link rel="canonical" href="https://catholicparishes.org/search" />
+
+      <meta property="og:title" content="Search Catholic Parishes – CatholicParishes.org" />
+      <meta
+        property="og:description"
+        content="Search for Catholic parishes across Ontario by name, diocese, or location."
+      />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://catholicparishes.org/search" />
+    </Helmet>
+
+
       {/* Component-scoped animation CSS */}
       {/* FIX 1: Changed transition property from max-height to height */}
       <style>{`

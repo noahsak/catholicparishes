@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+// ADDED: Import Helmet for SEO
+import { Helmet } from "react-helmet-async";
 import externalLinkIcon from "../assets/external_link_white.png";
 import { useLightbox, Lightbox } from "../hooks/lightbox";
 import CollapsibleSection from "../hooks/CollapsibleSection"; 
@@ -80,7 +82,7 @@ export default function DioceseDetail() {
     return b;
   }, [diocese, parishes, photos]);
 
-  // 💥 CORRECTED: List processing function uses 'parishCityCounty'
+  // List processing function
   const listFromRow = (namesStr, slugsStr) => {
     const names = String(namesStr || "").split(";").map((s) => s.trim()).filter(Boolean);
     const slugs = String(slugsStr || "").split(";").map((s) => s.trim());
@@ -95,7 +97,7 @@ export default function DioceseDetail() {
           (p) => p.parishSlug === slugValue
         );
         
-        // 🚨 Use the correct key: parishCityCounty
+        // Use the correct key: parishCityCounty
         if (fullParish?.parishCityCounty) {
           city = fullParish.parishCityCounty;
         }
@@ -162,6 +164,54 @@ export default function DioceseDetail() {
 
   return (
     <div className="min-h-screen relative flex flex-col text-white">
+
+      {/* 🇻🇦 SEO HEAD TAGS 🇻🇦 */}
+      <Helmet>
+        <title>{diocese.dioceseName}, {diocese.dioceseProvinceState}, {diocese.dioceseCountry} – Catholic Diocese</title>
+        <meta
+          name="description"
+          content={`Information, address, bishop, and mass statistics for the Roman Catholic ${diocese.dioceseName} in ${diocese.dioceseProvinceState}, ${diocese.dioceseCountry}. Find ${diocese.numParishesInDiocese} parishes in this diocese.`}
+        />
+        <link
+          rel="canonical"
+          href={`https://catholicparishes.org/diocese/${slug}`}
+        />
+
+        {/* Open Graph Tags for Social Media */}
+        <meta property="og:title" content={`${diocese.dioceseName} – Catholic Diocese`} />
+        <meta
+          property="og:description"
+          content={`Information, address, bishop, and mass statistics for the Roman Catholic ${diocese.dioceseName} in ${diocese.dioceseProvinceState}, ${diocese.dioceseCountry}. Find ${diocese.numParishesInDiocese} parishes in this diocese.`}
+        />
+        <meta
+          property="og:url"
+          content={`https://catholicparishes.org/diocese/${slug}`}
+        />
+        <meta property="og:type" content="website" />
+
+        {/* JSON-LD Schema */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            // Using Organization/ReligiousOrganization for a Diocese
+            "@type": "ReligiousOrganization",
+            name: diocese.dioceseName,
+            address: {
+                "@type": "PostalAddress",
+                // Use the full address if available
+                streetAddress: diocese.dioceseAddress.split(",")[0]?.trim(),
+                addressLocality: diocese.dioceseAddress.split(",")[1]?.trim(),
+                addressRegion: diocese.dioceseProvinceState,
+                addressCountry: diocese.dioceseCountry,
+            },
+            url: `https://catholicparishes.org/diocese/${slug}`,
+            sameAs: diocese.dioceseUrl ? [diocese.dioceseUrl] : undefined,
+            telephone: diocese.bishopPhone,
+          })}
+        </script>
+      </Helmet>
+      {/* 🇻🇦 END SEO HEAD TAGS 🇻🇦 */}
+      
       {/* Background */}
       <div
         className="absolute inset-0 bg-center bg-cover"
@@ -249,7 +299,7 @@ export default function DioceseDetail() {
           <ul className="list-disc ml-4 mt-2 space-y-1">
             {parishListFromRow.map((p, i) => (
               <li key={i}>
-                {/* 💥 CORRECTED RENDERING: [Parish Name], [City] */}
+                {/* CORRECTED RENDERING: [Parish Name], [City] */}
                 {p.slug ? (
                     <Link to={`/parish/${p.slug}`} className="underline text-blue-300">
                         {p.name}

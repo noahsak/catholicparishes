@@ -14,22 +14,57 @@
 
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#000000" />
-    <meta name="description" content="Web site created using create-react-app" />
+    <meta name="description" content="Interactive map of Catholic parishes in Ontario. Includes Mass times, confession times, and Adoration times." />
+    <meta name="theme-color" content="#ffffff" id="themeColor" />
+
+    <script>
+      // Wait for CSS to load
+      window.addEventListener("DOMContentLoaded", () => {
+        const accent = getComputedStyle(document.documentElement)
+          .getPropertyValue("--accent")
+          .trim();
+
+        const themeMetaTag = document.querySelector('meta[name="theme-color"]');
+
+        if (accent && themeMetaTag) {
+          themeMetaTag.setAttribute("content", accent);
+        }
+      });
+    </script>
+
+    <!-- SEO Metadata -->
+
+    <title>Catholic Parishes</title>
+
+    <meta name="description" content="Interactive map of Catholic parishes in Ontario. Includes Mass times, confession times, and Adoration times." />
+
+    <!-- Open Graph / Social Preview -->
+    <meta property="og:title" content="Catholic Parishes" />
+    <meta property="og:description" content="Interactive map of Catholic parishes in Ontario. Includes Mass times, confession times, and Adoration times." />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://catholicparishes.org" />
+    <meta property="og:image" content="/preview.png" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Catholic Parishes Map" />
+    <meta name="twitter:description" content="Interactive map of Catholic parishes in Ontario. Includes Mass times, confession times, and Adoration times." />
+    <meta name="twitter:image" content="/preview.png" />
+
 
     <link 
       rel="icon" 
-      href="%PUBLIC_URL%/icons/church_icon_blue_light.png" 
+      href="/icons/church_icon_blue_light180.png" 
       sizes="32x32"
     />
     <link 
       rel="apple-touch-icon" 
-      href="%PUBLIC_URL%/icons/church_icon_blue_light.png" 
+      href="/church_icon_blue_light180.png" 
       sizes="180x180"
     />
     <link 
       rel="shortcut icon" 
-      href="%PUBLIC_URL%/icons/church_icon_blue_light.png" 
+      href="/icons/church_icon_blue_light180.png" 
     />
 
     <title>Catholic Parishes</title>

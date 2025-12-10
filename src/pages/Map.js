@@ -4,6 +4,9 @@ import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 import { Link } from "react-router-dom";
 
+import { Helmet } from "react-helmet-async";
+
+
 // ⚠️ MARKER CLUSTERING IMPORTS
 import MarkerClusterGroup from 'react-leaflet-markercluster';
 import 'leaflet.markercluster/dist/MarkerCluster.css';
@@ -108,7 +111,7 @@ const FloatingTitle = ({ prefersDark, colorKey, triggerEasterEgg }) => {
 const FloatingThemeToggle = ({ isDarkModeOverride, setIsDarkModeOverride }) => {
   
   // The toggle container style. w-28 h-10 is the track size.
-  const baseToggleContainerStyle = "relative w-28 h-10 rounded-full font-medium shadow-xl backdrop-blur-sm transition flex items-center justify-between cursor-pointer p-[2px]";
+  const baseToggleContainerStyle = "relative w-28 h-8 rounded-full font-medium shadow-xl backdrop-blur-sm transition flex items-center justify-between cursor-pointer p-[2px]";
 
   // The 'Track' style (changes color based on mode)
   const trackColor = isDarkModeOverride ? "bg-white/25" : "bg-white/70"; 
@@ -130,7 +133,7 @@ const FloatingThemeToggle = ({ isDarkModeOverride, setIsDarkModeOverride }) => {
         
         {/* The Toggle Thumb (the moving element) */}
         <div className={`
-            absolute h-8 w-1/2 rounded-full shadow-md transform transition-transform duration-300 ease-in-out z-10
+            absolute h-6 w-1/2 rounded-full shadow-md transform transition-transform duration-300 ease-in-out z-10
             ${thumbPosition} 
             ${thumbColor}
         `}>
@@ -565,6 +568,35 @@ const toggleClustering = () => {
 
   return (
     <div className="relative h-screen w-full font-sans antialiased">
+
+    <Helmet>
+      <title>Catholic Parishes – Find Catholic Churches Across Ontario</title>
+      <meta
+        name="description"
+        content="Explore Catholic parishs in Canada. Find Mass times, confession times, adoration schedules, addresses, and parish contact information."
+      />
+      <link rel="canonical" href="https://catholicparishes.org/" />
+
+      {/* Social share cards */}
+      <meta property="og:title" content="Catholic Parishes – Canada" />
+      <meta
+        property="og:description"
+        content="Search and explore Catholic parishes across Canada with Mass times and parish details."
+      />
+      <meta property="og:type" content="website" />
+      <meta property="og:url" content="https://catholicparishes.org/" />
+    </Helmet>
+
+    <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Catholic Parishes",
+      url: "https://catholicparishes.org",
+      logo: "https://catholicparishes.org/icons/church_icon_blue_light.png"
+    })}
+    </script>
+
 
       {/* 🏃 EASTER EGG OVERLAY */}
       {activeEggs.map(id => (

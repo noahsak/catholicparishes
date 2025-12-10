@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 Not Found - Catholic Parishes</title>
+  <style>
+    /* Make page not scrollable by hiding any overflow */
+    html, body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      font-family: Arial, sans-serif;
+      /* FIX: Prevents scrolling on the page */
+      overflow: hidden; 
+    }
+
+    /* Background image styling and positioning adjustment */
+    body {
+      background: url('/404notfound.png') no-repeat center center fixed;
+      background-size: cover;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start; 
+      align-items: center;
+      text-align: center;
+      color: #ffffff;
+      text-shadow: 1px 1px 5px rgba(0,0,0,0.7);
+      padding-top: 10vh; 
+    }
+
+    /* Blurb at top center */
+    .blurb {
+      font-size: 1.5rem;
+      margin-bottom: 2rem;
+      max-width: 600px;
+      background-color: #ffc15583;
+      padding: 1rem 1.5rem;
+      border-radius: 10px;
+      opacity: 1;
+      color: #fff;
+    }
+
+    /* New container for buttons */
+    .btn-group {
+        /* Ensures the group is centered horizontally due to align-items: center on body */
+        display: flex; 
+        gap: 1rem; /* Spacing between buttons */
+    }
+
+    /* Return button styling */
+    .btn {
+      text-decoration: none;
+      color: #fff;
+      background-color: #ffc15583;
+      padding: 0.8rem 2rem;
+      border-radius: 5px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      transition: background-color 0.3s ease;
+    }
+
+    .btn:hover {
+      background-color: #ffc155df;
+      filter: none;
+    }
+
+    @media (max-width: 600px) {
+      body {
+        padding-top: 5vh; 
+      }
+      .blurb {
+        font-size: 1.2rem;
+        padding: 0.8rem 1rem;
+      }
+      .btn {
+        padding: 0.6rem 1.5rem;
+        font-size: 1rem;
+      }
+      /* Stack buttons vertically on small screens for better touch targets */
+      .btn-group {
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="blurb">
+    404 Not Found: The page you are looking for does not exist. If you think this is an inherent website error, please reach out to me to let me know using the button below. God Bless!
+  </div>
+  
+  <div class="btn-group">
+    <a href="/" class="btn">Return to Map</a>
+    <a href="/contact" class="btn">Report an Error</a>
+  </div>
+</body>
+</html>

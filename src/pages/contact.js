@@ -29,6 +29,20 @@ export default function Contact() {
   return (
     <div className="min-h-screen relative flex flex-col text-white">
 
+    <script type="application/ld+json">
+    {JSON.stringify({
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      name: "Catholic Parishes",
+      url: "https://catholicparishes.org",
+      contactPoint: {
+        "@type": "ContactPoint",
+        contactType: "Customer Support",
+        email: "contact@catholicparishes.org"
+      }
+    })}
+    </script>
+
       {/* Background image */}
       <div
         className="absolute inset-0 bg-center bg-cover transition-all duration-500"

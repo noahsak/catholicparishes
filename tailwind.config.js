@@ -1,6 +1,8 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
-  darkMode: "media", // or 'class' if you use a manual toggle
+  // UPDATED: Changed from "media" to "class" to align dark mode control
+  // with the application's manual toggle, which sets the 'dark' class on the body.
+  darkMode: "class",
   content: ["./src/**/*.{js,jsx,ts,tsx}"],
   theme: {
     extend: {

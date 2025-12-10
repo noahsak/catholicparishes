@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useParams, Link, useNavigate } from "react-router-dom";
+// ADDED: Import Helmet for SEO
+import { Helmet } from "react-helmet-async"; 
 import { useLightbox, Lightbox } from "../hooks/lightbox";
 import CollapsibleSection from "../hooks/CollapsibleSection"; // <--- import centralized
 
@@ -79,6 +81,48 @@ export default function DeaneryDetail() {
 
   return (
     <div className={`min-h-screen relative flex flex-col ${isDark ? "text-white" : "text-black"}`}>
+      
+      {/* 🇻🇦 SEO HEAD TAGS 🇻🇦 */}
+      <Helmet>
+        <title>{deanery.deaneryName} Deanery, {deanery.deaneryProvince}, {deanery.deaneryCountry} – Catholic Deanery</title>
+        <meta
+          name="description"
+          content={`Catholic parishes information, and stats for the ${deanery.deaneryName} Deanery (Diocese of ${deanery.deaneryDiocese}) in ${deanery.deaneryProvince}, ${deanery.deaneryCountry}. Find ${deanery.numParishesInDeanery} parishes in this Deanery.`}
+        />
+        <link
+          rel="canonical"
+          href={`https://catholicparishes.org/deanery/${slug}`}
+        />
+
+        {/* Open Graph Tags for Social Media */}
+        <meta property="og:title" content={`${deanery.deaneryName} Deanery – Catholic Parishes`} />
+        <meta
+          property="og:description"
+          content={`Parishes and stats for the ${deanery.deaneryName} Deanery.`}
+        />
+        <meta
+          property="og:url"
+          content={`https://catholicparishes.org/deanery/${slug}`}
+        />
+        <meta property="og:type" content="website" />
+
+        {/* JSON-LD Schema: Minimal Organization, since Deaneries typically don't have a specific public address. */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: `${deanery.deaneryName} Deanery`,
+            url: `https://catholicparishes.org/deanery/${slug}`,
+            areaServed: {
+                "@type": "AdministrativeArea",
+                addressRegion: deanery.deaneryProvince,
+                addressCountry: deanery.deaneryCountry,
+            }
+          })}
+        </script>
+      </Helmet>
+      {/* 🇻🇦 END SEO HEAD TAGS 🇻🇦 */}
+
       <div className="absolute inset-0 bg-center bg-cover"
         style={{ backgroundImage: banner ? `url('${banner}')` : "none", backgroundColor: banner ? undefined : isDark ? "#80008048" : "#f9fafb" }} />
       <div className="absolute inset-0 bg-black/50" />
@@ -148,12 +192,7 @@ export default function DeaneryDetail() {
 
         {/* Nationalities Dropdown */}
         {nationalitiesList.length > 0 && (
-          <CollapsibleSection title="Nationalities Represented" count={nationalitiesList.length} id={`deanery-${slug
-
-
-
-
-          }-nationalitiesList`}>
+          <CollapsibleSection title="Nationalities Represented" count={nationalitiesList.length} id={`deanery-${slug}-nationalitiesList`}>
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2 mt-2">
               {nationalitiesList.map((n, i) => <div key={i} className="list-disc ml-4">{n}</div>)}
             </div>

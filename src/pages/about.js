@@ -4,6 +4,8 @@ import { useLiturgicalAccentKey } from "../hooks/useLiturgicalAccentKey";
 import { useLiturgicalName } from "../hooks/useLiturgicalName";
 import { useLiturgicalSeason } from "../hooks/useLiturgicalSeason";
 
+import { Helmet } from "react-helmet-async";
+
 export default function About() {
   const navigate = useNavigate();
 
@@ -38,6 +40,37 @@ export default function About() {
 
   return (
     <div className="min-h-screen relative flex flex-col text-white">
+      <Helmet>
+        <title>About Catholic Parishes – CatholicParishes.org</title>
+        <meta
+          name="description"
+          content="Learn more about CatholicParishes.org. Explore Mass times, contact info, and more."
+        />
+        <link rel="canonical" href="https://catholicparishes.org/about" />
+
+        {/* OpenGraph for social sharing */}
+        <meta property="og:title" content="About Catholic Parishes – CatholicParishes.org" />
+        <meta
+          property="og:description"
+          content="Discover CatholicParishes.org's mission to provide complete parish information across Ontario, including Mass times, contact info, and more."
+        />
+        <meta property="og:url" content="https://catholicparishes.org/about" />
+        <meta property="og:type" content="website" />
+
+        {/* Optional JSON-LD Organization */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "Organization",
+            name: "Catholic Parishes",
+            url: "https://catholicparishes.org",
+            sameAs: [],
+            description: "CatholicParishes.org provides Mass times, parish addresses, and contact information for Catholic parishes across Canada."
+          })}
+        </script>
+      </Helmet>
+
+      
       <div
         className="absolute inset-0 bg-center bg-cover transition-all duration-500"
         style={{ backgroundImage: `url('${banner}')` }}
