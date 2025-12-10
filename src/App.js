@@ -12,8 +12,10 @@ import Search from "./pages/search";
 import NotFound from "./pages/NotFound";
 
 import { useLiturgicalAccent } from "./hooks/useLiturgicalAccent";
-
 import { LightboxProvider, Lightbox } from "./hooks/lightbox";
+
+// Import Vercel Analytics
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   // Keep accent hook (needed for theme)
@@ -36,6 +38,9 @@ function App() {
       </Router>
 
       <Lightbox />
+
+      {/* Vercel Analytics Component */}
+      <Analytics />
     </LightboxProvider>
   );
 }
