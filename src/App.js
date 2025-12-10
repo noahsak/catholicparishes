@@ -9,6 +9,7 @@ import FamilyDetail from "./pages/FamilyDetail";
 import About from "./pages/about";
 import Contact from "./pages/contact";
 import Search from "./pages/search";
+import NotFound from "./pages/NotFound";
 
 import { useLiturgicalAccent } from "./hooks/useLiturgicalAccent";
 
@@ -30,6 +31,7 @@ function App() {
           <Route path="/about" element={<About />} />
           <Route path="/contact" element={<Contact />} />
           <Route path="/search" element={<Search />} />
+          <Route path="*" element={<NotFound />} />
         </Routes>
       </Router>
 

@@ -570,7 +570,7 @@ const toggleClustering = () => {
     <div className="relative h-screen w-full font-sans antialiased">
 
     <Helmet>
-      <title>Catholic Parishes – Find Catholic Churches Across Ontario</title>
+      <title>Catholic Parishes</title>
       <meta
         name="description"
         content="Explore Catholic parishs in Canada. Find Mass times, confession times, adoration schedules, addresses, and parish contact information."
