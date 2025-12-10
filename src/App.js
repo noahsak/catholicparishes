@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Routes, Route, useLocation } from "react-router-dom";
 
 import Map from "./pages/Map";
 import ParishDetail from "./pages/ParishDetail";
@@ -14,8 +14,18 @@ import NotFound from "./pages/NotFound";
 import { useLiturgicalAccent } from "./hooks/useLiturgicalAccent";
 import { LightboxProvider, Lightbox } from "./hooks/lightbox";
 
-// Import Vercel Analytics
-import { Analytics } from '@vercel/analytics/react';
+// Vercel imports
+import { Analytics, pageview } from '@vercel/analytics/react';
+import { SpeedInsights } from "@vercel/speed-insights/react";
+
+// Component to track route changes in SPA
+function AnalyticsTracker() {
+  const location = useLocation();
+  useEffect(() => {
+    pageview(location.pathname + location.search);
+  }, [location]);
+  return null;
+}
 
 function App() {
   // Keep accent hook (needed for theme)
@@ -24,6 +34,7 @@ function App() {
   return (
     <LightboxProvider>
       <Router>
+        <AnalyticsTracker />
         <Routes>
           <Route path="/" element={<Map />} />
           <Route path="/parish/:slug" element={<ParishDetail />} />
@@ -39,8 +50,11 @@ function App() {
 
       <Lightbox />
 
-      {/* Vercel Analytics Component */}
+      {/* Vercel Analytics */}
       <Analytics />
+
+      {/* Vercel Speed Insights */}
+      <SpeedInsights />
     </LightboxProvider>
   );
 }
